@@ -1,10 +1,12 @@
-package io.sommers.meltsamany;
+package com.teamacronymcoders.zencessories.meltsamany;
 
 import com.google.common.collect.Lists;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.liquid.ILiquidStack;
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -14,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@ZenRegister
+@ModOnly("tconstruct")
 @ZenClass("mods.meltsamany.MeltRegistry")
 public class MeltRegistry {
     @ZenMethod
@@ -29,7 +33,7 @@ public class MeltRegistry {
                 }
             }
         } else {
-            MineTweakerAPI.getLogger().logError("You must enter an IIngredient");
+            CraftTweakerAPI.getLogger().logError("You must enter an IIngredient");
         }
 
         if (liquidStacks != null) {
@@ -39,15 +43,15 @@ public class MeltRegistry {
                 if (liquidStack != null && liquidStack.getInternal() instanceof FluidStack) {
                     fluidStacks[i] = (FluidStack) liquidStack.getInternal();
                 } else {
-                    MineTweakerAPI.getLogger().logError("Couldn't find FluidStack output");
+                    CraftTweakerAPI.getLogger().logError("Couldn't find FluidStack output");
                 }
             }
         } else {
-            MineTweakerAPI.getLogger().logError("You must enter at least one ILiquidStack");
+            CraftTweakerAPI.getLogger().logError("You must enter at least one ILiquidStack");
         }
 
         if (fluidStacks != null && inputStack != null) {
-            Map<String, List<FluidStack>> entries = MeltsAMany.instance.getMeltEntries();
+            Map<String, List<FluidStack>> entries = MeltHandler.getInstance().getMeltEntries();
             for (ItemStack itemStack : inputStack) {
                 String itemStackString = itemStack.toString();
                 if (!entries.containsKey(itemStackString)) {
@@ -74,6 +78,6 @@ public class MeltRegistry {
 
     @ZenMethod
     public static void addMeltHandler(IMeltFunction meltFunction) {
-        MeltsAMany.instance.getMeltFunctions().add(meltFunction);
+        MeltHandler.getInstance().getMeltFunctions().add(meltFunction);
     }
 }

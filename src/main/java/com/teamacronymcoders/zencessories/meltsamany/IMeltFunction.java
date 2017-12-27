@@ -1,7 +1,7 @@
-package io.sommers.meltsamany;
+package com.teamacronymcoders.zencessories.meltsamany;
 
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 
 import java.util.List;
 
