@@ -1,0 +1,59 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+    }
+}
+
+apply plugin: "net.minecraftforge.gradle.forge"
+
+version = modVersion
+group = modGroup
+archivesBaseName = modBaseName
+
+minecraft {
+    version = project.minecraftVersion + "-" + project.forgeVersion
+    runDir = "run"
+
+    mappings = project.mcpVersion
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name "CraftTweaker"
+        url "http://maven.blamejared.com"
+    }
+    maven {
+        name 'JEI/Tinkers'
+        url "http://dvs1.progwml6.com/files/maven"
+    }
+}
+
+dependencies {
+    deobfCompile "mezz.jei:jei_${minecraftVersion}:${jeiVersion}"
+    deobfCompile "slimeknights:TConstruct:${tinkersVersion}"
+    deobfCompile "slimeknights.mantle:Mantle:${mantleVersion}"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:${crafttweakerVersion}"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "mcmod.info"
+
+        expand "version": project.version, "mcversion": project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude "mcmod.info"
+    }
+}
