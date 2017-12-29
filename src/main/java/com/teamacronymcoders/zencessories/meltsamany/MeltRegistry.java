@@ -18,7 +18,7 @@ import java.util.Map;
 
 @ZenRegister
 @ModOnly("tconstruct")
-@ZenClass("mods.meltsamany.MeltRegistry")
+@ZenClass("mods.zencessories.MeltRegistry")
 public class MeltRegistry {
     @ZenMethod
     public static void addSecondaryResult(IIngredient itemStackInput, ILiquidStack... liquidStacks) {

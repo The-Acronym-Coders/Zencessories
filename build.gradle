@@ -38,9 +38,13 @@ repositories {
 
 dependencies {
     deobfCompile "mezz.jei:jei_${minecraftVersion}:${jeiVersion}"
-    deobfCompile "slimeknights:TConstruct:${tinkersVersion}"
+    deobfCompile ("slimeknights:TConstruct:${tinkersVersion}")  {
+        exclude module: "jei_${minecraftVersion}"
+    }
     deobfCompile "slimeknights.mantle:Mantle:${mantleVersion}"
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:${crafttweakerVersion}"
+    deobfCompile ("CraftTweaker2:CraftTweaker2-MC1120-Main:${crafttweakerVersion}")  {
+        exclude module: "jei_${minecraftVersion}"
+    }
 }
 
 processResources {
