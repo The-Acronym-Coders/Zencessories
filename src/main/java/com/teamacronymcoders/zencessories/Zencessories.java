@@ -1,6 +1,7 @@
 package com.teamacronymcoders.zencessories;
 
-import com.teamacronymcoders.zencessories.burntime.BurnTimeCommand;
+import com.teamacronymcoders.zencessories.itemstackinfo.BurnTimeCommand;
+import com.teamacronymcoders.zencessories.itemstackinfo.EnchantabilityCommand;
 import crafttweaker.mc1120.commands.CTChatCommand;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -17,5 +18,6 @@ public class Zencessories {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         CTChatCommand.registerCommand(new BurnTimeCommand());
+        CTChatCommand.registerCommand(new EnchantabilityCommand());
     }
 }

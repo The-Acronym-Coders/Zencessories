@@ -1,4 +1,4 @@
-package com.teamacronymcoders.zencessories.burntime;
+package com.teamacronymcoders.zencessories.itemstackinfo;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.mc1120.commands.CraftTweakerCommand;
@@ -7,7 +7,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -19,37 +18,33 @@ import java.util.Optional;
 import static crafttweaker.mc1120.commands.SpecialMessagesChat.getClickableCommandText;
 import static crafttweaker.mc1120.commands.SpecialMessagesChat.getNormalMessage;
 
-public class BurnTimeCommand extends CraftTweakerCommand {
-    public BurnTimeCommand() {
-        super("burnTime");
+public abstract class ItemStackInfoCommand extends CraftTweakerCommand {
+    public ItemStackInfoCommand(String subCommandName) {
+        super(subCommandName);
     }
 
     @Override
     protected void init() {
-        setDescription(getClickableCommandText("\u00A72/ct burnTime", "/ct burnTime", true),
-                getNormalMessage(" \u00A73Outputs a list of burn times in the game to the crafttweaker.log"));
+        setDescription(getClickableCommandText("\u00A72/ct " + subCommandName, "/ct " + subCommandName, true),
+                getNormalMessage(" \u00A73Outputs a list of " + subCommandName + " in the game to the crafttweaker.log"));
     }
 
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) {
         sender.sendMessage(new TextComponentString("Starting Calculation of Burn Times, This may take some time"));
         ForgeRegistries.ITEMS.getValues().stream()
-                .map(BurnTimeCommand::getSubItems)
+                .map(this::getSubItems)
                 .flatMap(List::stream)
-                .map(BurnTimeCommand::getBurnTimeString)
+                .map(this::getStringForItemStack)
                 .filter(Objects::nonNull)
                 .forEach(CraftTweakerAPI::logInfo);
         sender.sendMessage(new TextComponentString("Burn Time Calculation Complete, See CraftTweaker.log for info"));
 
     }
 
-    private static String getBurnTimeString(ItemStack itemStack) {
-        int burnTime = TileEntityFurnace.getItemBurnTime(itemStack);
-        return burnTime > 0 ? String.format("%s:%d - %d", itemStack.getItem().getRegistryName(), itemStack.getItemDamage(),
-                burnTime) : null;
-    }
+    protected abstract String getStringForItemStack(ItemStack itemStack);
 
-    private static List<ItemStack> getSubItems(Item item) {
+    protected List<ItemStack> getSubItems(Item item) {
         CreativeTabs[] creativeTabs = item.getCreativeTabs();
         NonNullList<ItemStack> itemStacks = NonNullList.create();
         for (CreativeTabs creativeTab : creativeTabs) {
