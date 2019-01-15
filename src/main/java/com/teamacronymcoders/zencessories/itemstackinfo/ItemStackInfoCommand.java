@@ -31,14 +31,14 @@ public abstract class ItemStackInfoCommand extends CraftTweakerCommand {
 
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) {
-        sender.sendMessage(new TextComponentString("Starting Calculation of Burn Times, This may take some time"));
+        sender.sendMessage(new TextComponentString("Starting Calculation of " + subCommandName + ", This may take some time"));
         ForgeRegistries.ITEMS.getValues().stream()
                 .map(this::getSubItems)
                 .flatMap(List::stream)
                 .map(this::getStringForItemStack)
                 .filter(Objects::nonNull)
                 .forEach(CraftTweakerAPI::logInfo);
-        sender.sendMessage(new TextComponentString("Burn Time Calculation Complete, See CraftTweaker.log for info"));
+        sender.sendMessage(new TextComponentString(subCommandName + " Calculation Complete, See CraftTweaker.log for info"));
 
     }
 
